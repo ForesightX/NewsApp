@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="header">20sp</dimen>
+    <dimen name="body">16sp</dimen>
+    <dimen name="caption">11sp</dimen>
+
+    <dimen name="guideline_margin">16sp</dimen>
+    <dimen name="small_padding">8sp</dimen>
+</resources>
