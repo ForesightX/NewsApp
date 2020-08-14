@@ -15,11 +15,11 @@ jobs:
         with:
           java-version: 1_10
 
-      -name: Run Tests
-       run: ./gradlew test
+      - name: Run Tests
+        run: ./gradlew test
 
-      -name: Build Project
-       run: ./gradlew assemble
+      - name: Build Project
+        run: ./gradlew assemble
 
-      -name: Make gradlew executable
-       run: chmod +x ./gradlew
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
