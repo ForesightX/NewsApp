@@ -20,6 +20,3 @@ jobs:
 
       - name: Build Project
         run: ./gradlew assemble
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
