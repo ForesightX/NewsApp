@@ -1,4 +1,4 @@
-# NewsApp ![Android Build] (https://github.com/ForesightX/NewsApp/workflows/Android%20Build/badge.svg)
+# NewsApp ![Android Build](https://github.com/ForesightX/NewsApp/workflows/Android%20Build/badge.svg)
 
 ## Description
 An android app written in (Java X Kotlin) which leverages the power of a REST API provided by https://newsapi.org
