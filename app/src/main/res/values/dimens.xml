@@ -4,6 +4,8 @@
     <dimen name="body">16sp</dimen>
     <dimen name="caption">11sp</dimen>
 
-    <dimen name="guideline_margin">16sp</dimen>
-    <dimen name="small_padding">8sp</dimen>
+    <dimen name="big_margin">16dp</dimen>
+    <dimen name="small_padding">8dp</dimen>
+    <dimen name="one_px">1px</dimen>
+    <dimen name="img_res">120dp</dimen>
 </resources>
