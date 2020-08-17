@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         tabs = binding.tabs
 
         val mTitles = arrayOf(
-            "Headlines", "Business",
+            "General", "Business",
             "Entertainment", "Health", "Sport")
 
         val adapter = NewsPagerAdapter(this, mTitles.size)
