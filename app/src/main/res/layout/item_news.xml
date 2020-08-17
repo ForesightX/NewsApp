@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
+    <data>
+
+        <variable
+            name="article"
+            type="com.tenodevs.newsapp.domain.Article" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,7 +20,8 @@
         android:layout_height="@dimen/img_res"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        app:imageUrl="@{article.urlToImage}"/>
 
     <TextView
         android:id="@+id/textView"
@@ -27,6 +35,7 @@
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:text="@{article.title}"
         tools:text="ABCDEFGHIJKLMNOPQRSTUVWXYZ" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

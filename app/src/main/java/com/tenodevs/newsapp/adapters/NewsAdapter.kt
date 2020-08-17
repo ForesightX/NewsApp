@@ -33,7 +33,8 @@ class NewsAdapter: ListAdapter<Article, NewsAdapter.NewsViewHolder>(DiffCallback
         : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(article: Article) {
-
+            binding.article = article
+            binding.executePendingBindings()
         }
 
         companion object {
