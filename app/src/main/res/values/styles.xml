@@ -1,15 +1,28 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto</item>
     </style>
 
     <style name="CustomTabText" parent="android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="ToolbarTheme">
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
 </resources>

@@ -2,6 +2,7 @@ package com.tenodevs.newsapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.ViewPager
@@ -36,6 +37,8 @@ class MainActivity : AppCompatActivity() {
             tab.text = mTitles[position]
         }.attach()
 
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false);
     }
 
     override fun onBackPressed() {
@@ -44,5 +47,10 @@ class MainActivity : AppCompatActivity() {
         } else {
             viewPager.currentItem = 0
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_toobar, menu)
+        return true
     }
 }
