@@ -12,6 +12,14 @@ import retrofit2.http.Query
 private const val API_KEY = "c5f0ab174f8d49b4989e405d8e97a9c5"
 private const val BASE_URL = "https://newsapi.org"
 
+enum class NewsFilter(val value: String) {
+    HEADLINE("General"),
+    BUSINESS("business"),
+    ENTERTAINMENT("entertainment"),
+    HEALTH("health"),
+    SPORT("sport")
+}
+
 val retrofit = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory.create())
     .addCallAdapterFactory(CoroutineCallAdapterFactory())
