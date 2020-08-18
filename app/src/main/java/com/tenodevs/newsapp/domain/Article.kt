@@ -1,5 +1,10 @@
 package com.tenodevs.newsapp.domain
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
+
+@Parcelize
 data class Article(
     val author: String ?,
     val content: String ?,
@@ -9,4 +14,4 @@ data class Article(
     val title: String ?,
     val url: String,
     val urlToImage: String ?
-)
+) : Parcelable

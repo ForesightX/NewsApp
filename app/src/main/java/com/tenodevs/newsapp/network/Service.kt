@@ -31,6 +31,8 @@ interface NewsAPIService {
     @GET("/v2/top-headlines")
     fun getLatestHeadlineAsync(
         @Query("category") category : String, //General, business, entertainment, health, science, sports, technology
+        @Query("country") country : String = "ng",
+        @Query("pageSize") pageSize : Int = 100,
         @Query("apikey") apikey : String = API_KEY
     ) : Deferred<News>
 }
