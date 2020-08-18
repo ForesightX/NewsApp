@@ -10,7 +10,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 class NewsViewModel(application: Application, private val category: NewsFilter)
     : AndroidViewModel(application) {
@@ -38,8 +37,8 @@ class NewsViewModel(application: Application, private val category: NewsFilter)
                 val listResult = getNewsItems.await()
                 _newsList.value = listResult.articles
                 Log.i("FETCH_NEWS", "Success : ${listResult.totalResults} news fetched.")
-            } catch (e : HttpException) {
-                Log.e("FETCH_NEWS", "Failure: ${e.message()}")
+            } catch (e : Exception) {
+                Log.e("FETCH_NEWS", "Failure: ${e.message}")
             }
         }
     }
