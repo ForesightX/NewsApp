@@ -2,6 +2,7 @@ package com.tenodevs.newsapp.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.tenodevs.newsapp.R
 import com.tenodevs.newsapp.adapters.NewsAdapter
 import com.tenodevs.newsapp.databinding.FragmentHeadlinesBinding
+import com.tenodevs.newsapp.network.NewsFilter
 import com.tenodevs.newsapp.viewmodels.HeadlineViewModel
 
 class HeadlinesFragment : Fragment() {
@@ -37,6 +39,15 @@ class HeadlinesFragment : Fragment() {
         binding.lifecycleOwner = this
 
         return binding.root
+
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.refresh -> viewModel.getFilteredHeadlines(NewsFilter.HEADLINE)
+        }
+        return true
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
