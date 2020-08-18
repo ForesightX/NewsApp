@@ -42,9 +42,9 @@ class NewsViewModel(application: Application, private val category: NewsFilter) 
                 val listResult = getNewsItems.await()
                 _newsList.value = listResult.articles
                 Log.i("FETCH_NEWS", "Success : ${listResult.totalResults} news fetched.")
-            } catch (e: HttpException) {
-                _error.value = "Could not connect to the interne"
-                Log.e("FETCH_NEWS", "Failure: ${e.message()}")
+            } catch (e: Exception) {
+                _error.value = "Connection error"
+                Log.e("FETCH_NEWS", "Failure: ${e.message}")
             }
         }
     }

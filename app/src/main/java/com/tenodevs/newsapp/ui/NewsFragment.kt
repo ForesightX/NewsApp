@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.snackbar.Snackbar
 import com.tenodevs.newsapp.R
 import com.tenodevs.newsapp.adapters.NewsAdapter
 import com.tenodevs.newsapp.adapters.TAB_POSITION
@@ -44,12 +46,19 @@ class NewsFragment : Fragment() {
         )
         binding.lifecycleOwner = this
 
+        viewModel.error.observe(viewLifecycleOwner, Observer {
+            when (it != null){
+                true -> Snackbar.make(binding.recyclerView, it.toString(), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.sncakbar_action){
+                        viewModel.getFilteredHeadlines()
+                    }.show()
+            }
+        })
         arguments?.takeIf {
             it.containsKey(TAB_POSITION)
         }?.apply {
             position = getInt(TAB_POSITION)
         }
-
 
         return binding.root
     }
@@ -86,6 +95,7 @@ class NewsFragment : Fragment() {
             viewModel.getFilteredHeadlines()
             swipeRefresh.isRefreshing = false
         }
+
     }
 
 }
