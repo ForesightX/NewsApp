@@ -29,7 +29,7 @@ class HeadlineViewModel(application: Application) : AndroidViewModel(application
         getFilteredHeadlines(NewsFilter.HEADLINE)
     }
 
-    private fun getFilteredHeadlines(category: NewsFilter) {
+    fun getFilteredHeadlines(category: NewsFilter) {
         viewModelScope.launch {
             val getNewsItems = NewsAPI.retrofitService.getLatestHeadlineAsync(category.value)
 

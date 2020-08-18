@@ -1,11 +1,9 @@
 package com.tenodevs.newsapp.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -26,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         viewPager = binding.viewpager
         tabs = binding.tabs
 
+
         val mTitles = arrayOf(
             "General", "Business",
             "Entertainment", "Health", "Sport")
@@ -38,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         }.attach()
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false);
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     override fun onBackPressed() {
