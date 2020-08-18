@@ -13,20 +13,20 @@ import com.tenodevs.newsapp.R
 import com.tenodevs.newsapp.adapters.NewsAdapter
 import com.tenodevs.newsapp.adapters.TAB_POSITION
 import com.tenodevs.newsapp.databinding.FragmentNewsBinding
-import com.tenodevs.newsapp.viewmodels.HeadlineViewModel
+import com.tenodevs.newsapp.viewmodels.NewsViewModel
 
 class NewsFragment : Fragment() {
 
     private lateinit var binding: FragmentNewsBinding
     private var position = 0
 
-    private val viewModel: HeadlineViewModel by lazy {
+    private val viewModel: NewsViewModel by lazy {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        ViewModelProvider(this, HeadlineViewModel.HeadlineViewModelFactory(
+        ViewModelProvider(this, NewsViewModel.HeadlineViewModelFactory(
             activity.application, position
-        )).get(HeadlineViewModel::class.java)
+        )).get(NewsViewModel::class.java)
     }
 
     override fun onCreateView(

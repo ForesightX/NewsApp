@@ -12,7 +12,7 @@ class NewsPagerAdapter(fa: FragmentActivity, private val count: Int) : FragmentS
     override fun getItemCount() = count
 
     override fun createFragment(position: Int): Fragment {
-        val fragment = HeadlinesFragment()
+        val fragment = NewsFragment()
         fragment.arguments = Bundle().apply {
             putInt(TAB_POSITION, position)
         }
