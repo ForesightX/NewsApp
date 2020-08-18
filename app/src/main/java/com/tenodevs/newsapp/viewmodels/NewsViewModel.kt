@@ -43,10 +43,6 @@ class NewsViewModel(application: Application, private val category: NewsFilter)
             }
         }
     }
-    fun updateNewsWithCategory() {
-        getFilteredHeadlines()
-    }
-
 
     class HeadlineViewModelFactory(private val application: Application, val position: Int)
         : ViewModelProvider.Factory {
