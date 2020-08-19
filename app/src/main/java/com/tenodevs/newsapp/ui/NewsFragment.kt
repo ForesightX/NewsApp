@@ -2,7 +2,6 @@ package com.tenodevs.newsapp.ui
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -20,7 +19,6 @@ import com.tenodevs.newsapp.adapters.TAB_POSITION
 import com.tenodevs.newsapp.databinding.FragmentNewsBinding
 import com.tenodevs.newsapp.viewmodels.NewsViewModel
 import com.tenodevs.newsapp.viewmodels.Status
-import kotlinx.android.synthetic.main.fragment_news.*
 
 class NewsFragment : Fragment() {
 
@@ -36,6 +34,18 @@ class NewsFragment : Fragment() {
                 activity.application, position
             )
         ).get(NewsViewModel::class.java)
+    }
+
+    private val snackBar: Snackbar by lazy {
+        Snackbar.make(
+            binding.recyclerView,
+            getString(R.string.snackbar_error),
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction(R.string.sncakbar_action) {
+                viewModel.getFilteredHeadlines()
+            }
+            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorActionText))
     }
 
     override fun onCreateView(
@@ -75,18 +85,21 @@ class NewsFragment : Fragment() {
             recyclerView.adapter = NewsAdapter()
             recyclerView.addItemDecoration(decoration)
 
+            swipeRefresh.setColorSchemeColors(Color.WHITE)
+
+            swipeRefresh.setOnRefreshListener {
+                this@NewsFragment.viewModel.apply {
+                    refreshDataAction()
+                    getFilteredHeadlines()
+                }
+                swipeRefresh.isRefreshing = false
+            }
         }
+
         viewModel.status.observe(viewLifecycleOwner, Observer {
             when (it) {
-                Status.ERROR -> Snackbar.make(
-                    binding.recyclerView,
-                    getString(R.string.snackbar_error),
-                    Snackbar.LENGTH_INDEFINITE
-                )
-                    .setAction(R.string.sncakbar_action) {
-                        viewModel.getFilteredHeadlines()
-                    }.show()
-                else -> Log.i("STATUS", "${it.toString()} :  Network Restored")
+                Status.ERROR -> snackBar.show()
+                else -> snackBar.dismiss()
             }
         })
 
@@ -95,14 +108,6 @@ class NewsFragment : Fragment() {
                 it, R.color.colorPrimaryDark
             )
         }?.let { binding.swipeRefresh.setProgressBackgroundColorSchemeColor(it) }
-
-        binding.swipeRefresh.setColorSchemeColors(Color.WHITE)
-
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshDataAction()
-            viewModel.getFilteredHeadlines()
-            swipeRefresh.isRefreshing = false
-        }
 
     }
 
