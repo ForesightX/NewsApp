@@ -1,9 +1,10 @@
-package com.x.foresight.newguide.repository
+package com.tenodevs.newsapp.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.tenodevs.newsapp.domain.Article
+import com.tenodevs.newsapp.domain.toDatabaseModel
 import com.tenodevs.newsapp.network.NewsAPI
 import com.tenodevs.newsapp.network.NewsFilter
 import com.tenodevs.newsapp.viewmodels.Status
@@ -33,6 +34,8 @@ class NewsRepository(private val app: Application) {
                 }
 
                 val listResult = getNewsItems.await()
+
+                val listDatabaseArticle = listResult.articles.toDatabaseModel(category.value)
 
                 withContext(Dispatchers.Main) {
                     _status.value = Status.DONE
