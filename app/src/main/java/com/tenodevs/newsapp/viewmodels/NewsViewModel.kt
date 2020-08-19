@@ -10,7 +10,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
+
+enum class Status { LOADING, DONE, ERROR }
 
 class NewsViewModel(application: Application, private val category: NewsFilter) :
     AndroidViewModel(application) {
@@ -22,13 +23,13 @@ class NewsViewModel(application: Application, private val category: NewsFilter) 
         viewModelJob.cancel()
     }
 
+    private val _status = MutableLiveData<Status>()
+    val status: LiveData<Status>
+        get() = _status
+
     private val _newsList = MutableLiveData<List<Article>>()
     val newsList: LiveData<List<Article>>
         get() = _newsList
-
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String>
-        get() = _error
 
     init {
         getFilteredHeadlines()
@@ -39,12 +40,13 @@ class NewsViewModel(application: Application, private val category: NewsFilter) 
             val getNewsItems = NewsAPI.retrofitService.getLatestHeadlineAsync(category.value)
 
             try {
+                _status.value = Status.LOADING
                 val listResult = getNewsItems.await()
+                _status.value = Status.DONE
                 _newsList.value = listResult.articles
-                _error.value = null
                 Log.i("FETCH_NEWS", "Success : ${listResult.totalResults} news fetched.")
             } catch (e: Exception) {
-                _error.value = "Connection Error"
+                _status.value = Status.ERROR
                 Log.e("FETCH_NEWS", "Failure: ${e.message}")
             }
         }
