@@ -1,11 +1,11 @@
 package com.tenodevs.newsapp.viewmodels
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.*
-import com.tenodevs.newsapp.domain.Article
-import com.tenodevs.newsapp.network.NewsAPI
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.tenodevs.newsapp.network.NewsFilter
+import com.x.foresight.newguide.repository.NewsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -15,7 +15,11 @@ enum class Status { LOADING, DONE, ERROR }
 
 class NewsViewModel(application: Application, private val category: NewsFilter) :
     AndroidViewModel(application) {
+
     private val viewModelJob = SupervisorJob()
+    private val mRepository: NewsRepository = NewsRepository(application)
+    val status = mRepository.status
+    val newsList = mRepository.newsList
 
     private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
     override fun onCleared() {
@@ -23,37 +27,18 @@ class NewsViewModel(application: Application, private val category: NewsFilter) 
         viewModelJob.cancel()
     }
 
-    private val _status = MutableLiveData<Status>()
-    val status: LiveData<Status>
-        get() = _status
-
-    private val _newsList = MutableLiveData<List<Article>>()
-    val newsList: LiveData<List<Article>>
-        get() = _newsList
-
     init {
         getFilteredHeadlines()
     }
 
     fun getFilteredHeadlines() {
         viewModelScope.launch {
-            val getNewsItems = NewsAPI.retrofitService.getLatestHeadlineAsync(category.value)
-
-            try {
-                _status.value = Status.LOADING
-                val listResult = getNewsItems.await()
-                _status.value = Status.DONE
-                _newsList.value = listResult.articles
-                Log.i("FETCH_NEWS", "Success : ${listResult.totalResults} news fetched.")
-            } catch (e: Exception) {
-                _status.value = Status.ERROR
-                Log.e("FETCH_NEWS", "Failure: ${e.message}")
-            }
+            mRepository.getFilteredHeadlines(category)
         }
     }
 
     fun refreshDataAction() {
-        _newsList.value = ArrayList()
+        mRepository.refreshDataAction()
     }
 
     class HeadlineViewModelFactory(private val application: Application, val position: Int) :
