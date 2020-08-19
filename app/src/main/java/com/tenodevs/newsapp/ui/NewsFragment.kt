@@ -1,19 +1,24 @@
 package com.tenodevs.newsapp.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.material.snackbar.Snackbar
 import com.tenodevs.newsapp.R
 import com.tenodevs.newsapp.adapters.NewsAdapter
 import com.tenodevs.newsapp.adapters.TAB_POSITION
 import com.tenodevs.newsapp.databinding.FragmentNewsBinding
 import com.tenodevs.newsapp.viewmodels.NewsViewModel
+import kotlinx.android.synthetic.main.fragment_news.*
 
 class NewsFragment : Fragment() {
 
@@ -24,9 +29,11 @@ class NewsFragment : Fragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        ViewModelProvider(this, NewsViewModel.HeadlineViewModelFactory(
-            activity.application, position
-        )).get(NewsViewModel::class.java)
+        ViewModelProvider(
+            this, NewsViewModel.HeadlineViewModelFactory(
+                activity.application, position
+            )
+        ).get(NewsViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -37,7 +44,6 @@ class NewsFragment : Fragment() {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_news, container, false
         )
-
         binding.lifecycleOwner = this
 
         arguments?.takeIf {
@@ -46,11 +52,24 @@ class NewsFragment : Fragment() {
             position = getInt(TAB_POSITION)
         }
 
+        viewModel.error.observe(viewLifecycleOwner, Observer {
+            when (it != null) {
+                true -> Snackbar.make(
+                    binding.recyclerView,
+                    it.toString(),
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                    .setAction(R.string.sncakbar_action) {
+                        viewModel.getFilteredHeadlines()
+                    }.show()
+            }
+        })
+
         return binding.root
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.refresh -> viewModel.getFilteredHeadlines()
         }
         return true
@@ -66,6 +85,20 @@ class NewsFragment : Fragment() {
             val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
             recyclerView.adapter = NewsAdapter()
             recyclerView.addItemDecoration(decoration)
+
+        }
+        this.context?.let {
+            ContextCompat.getColor(
+                it, R.color.colorPrimaryDark
+            )
+        }?.let { binding.swipeRefresh.setProgressBackgroundColorSchemeColor(it) }
+
+        binding.swipeRefresh.setColorSchemeColors(Color.WHITE)
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.refreshDataAction()
+            viewModel.getFilteredHeadlines()
+            swipeRefresh.isRefreshing = false
         }
 
     }
