@@ -5,4 +5,6 @@
     <string name="hello_blank_fragment">This is a blank fragment</string>
     <string name="connection_problem">Error in connection. Try again.</string>
     <string name="sncakbar_action">Reload</string>
+    <string name="snackbar_error">Connection Error</string>
+    <string name="snackbar_restored">Network Restored</string>
 </resources>

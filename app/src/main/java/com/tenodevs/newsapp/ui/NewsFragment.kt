@@ -2,6 +2,7 @@ package com.tenodevs.newsapp.ui
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -18,6 +19,7 @@ import com.tenodevs.newsapp.adapters.NewsAdapter
 import com.tenodevs.newsapp.adapters.TAB_POSITION
 import com.tenodevs.newsapp.databinding.FragmentNewsBinding
 import com.tenodevs.newsapp.viewmodels.NewsViewModel
+import com.tenodevs.newsapp.viewmodels.Status
 import kotlinx.android.synthetic.main.fragment_news.*
 
 class NewsFragment : Fragment() {
@@ -52,19 +54,6 @@ class NewsFragment : Fragment() {
             position = getInt(TAB_POSITION)
         }
 
-        viewModel.error.observe(viewLifecycleOwner, Observer {
-            when (it != null) {
-                true -> Snackbar.make(
-                    binding.recyclerView,
-                    it.toString(),
-                    Snackbar.LENGTH_INDEFINITE
-                )
-                    .setAction(R.string.sncakbar_action) {
-                        viewModel.getFilteredHeadlines()
-                    }.show()
-            }
-        })
-
         return binding.root
     }
 
@@ -87,6 +76,20 @@ class NewsFragment : Fragment() {
             recyclerView.addItemDecoration(decoration)
 
         }
+        viewModel.status.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                Status.ERROR -> Snackbar.make(
+                    binding.recyclerView,
+                    getString(R.string.snackbar_error),
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                    .setAction(R.string.sncakbar_action) {
+                        viewModel.getFilteredHeadlines()
+                    }.show()
+                else -> Log.i("STATUS", "${it.toString()} :  Network Restored")
+            }
+        })
+
         this.context?.let {
             ContextCompat.getColor(
                 it, R.color.colorPrimaryDark
