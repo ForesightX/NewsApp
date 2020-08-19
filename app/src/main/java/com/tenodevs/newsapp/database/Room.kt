@@ -4,21 +4,22 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.tenodevs.newsapp.domain.Article
+import com.tenodevs.newsapp.domain.DatabaseArticle
 
 @Dao
 interface NewsDao {
 
-    @Query("SELECT * FROM Article")
-    fun getArticles() : LiveData<List<Article>>
+    @Query("SELECT * FROM DatabaseArticle")
+    fun getArticles() : LiveData<List<DatabaseArticle>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg articles: Article)
+    fun insertAll(vararg articles: DatabaseArticle)
 
-    @Query("DELETE FROM Article")
-    fun deleteAll()
+    @Query("DELETE FROM DatabaseArticle WHERE category = :category")
+    fun deleteAll(category: String)
 }
 
-@Database(entities = [Article::class], version = 1, exportSchema = false)
+@Database(entities = [DatabaseArticle::class], version = 1, exportSchema = false)
 abstract class NewsDatabase : RoomDatabase() {
     abstract val newsDao: NewsDao
 }
