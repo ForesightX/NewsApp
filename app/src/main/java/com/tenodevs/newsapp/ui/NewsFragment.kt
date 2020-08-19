@@ -46,19 +46,24 @@ class NewsFragment : Fragment() {
         )
         binding.lifecycleOwner = this
 
-        viewModel.error.observe(viewLifecycleOwner, Observer {
-            when (it != null){
-                true -> Snackbar.make(binding.recyclerView, it.toString(), Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.sncakbar_action){
-                        viewModel.getFilteredHeadlines()
-                    }.show()
-            }
-        })
         arguments?.takeIf {
             it.containsKey(TAB_POSITION)
         }?.apply {
             position = getInt(TAB_POSITION)
         }
+
+        viewModel.error.observe(viewLifecycleOwner, Observer {
+            when (it != null) {
+                true -> Snackbar.make(
+                    binding.recyclerView,
+                    it.toString(),
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                    .setAction(R.string.sncakbar_action) {
+                        viewModel.getFilteredHeadlines()
+                    }.show()
+            }
+        })
 
         return binding.root
     }
