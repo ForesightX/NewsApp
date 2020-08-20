@@ -17,7 +17,7 @@ class NewsViewModel(application: Application, private val category: NewsFilter) 
     AndroidViewModel(application) {
 
     private val viewModelJob = SupervisorJob()
-    private val mRepository: NewsRepository = NewsRepository(application)
+    private val mRepository: NewsRepository = NewsRepository(application, category.value)
     val status = mRepository.status
     val newsList = mRepository.newsList
 
@@ -33,7 +33,7 @@ class NewsViewModel(application: Application, private val category: NewsFilter) 
 
     fun getFilteredHeadlines() {
         viewModelScope.launch {
-            mRepository.getFilteredHeadlines(category)
+            mRepository.getFilteredHeadlines()
         }
     }
 
