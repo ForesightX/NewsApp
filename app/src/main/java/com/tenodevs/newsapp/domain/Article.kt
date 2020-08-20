@@ -38,3 +38,15 @@ fun List<Article>.toDatabaseModel(category: String) : List<DatabaseArticle> {
         )
     }
 }
+
+fun List<DatabaseArticle>.toDomainModel(category: String) : List<Article> {
+    return this.map {
+        Article(
+            author = it.author,
+            publishedAt = it.publishedAt,
+            title = it.title,
+            url = it.url,
+            urlToImage = it.urlToImage
+        )
+    }
+}
