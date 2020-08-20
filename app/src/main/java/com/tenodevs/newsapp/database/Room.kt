@@ -9,10 +9,10 @@ import com.tenodevs.newsapp.domain.DatabaseArticle
 @Dao
 interface NewsDao {
 
-    @Query("SELECT * FROM DatabaseArticle")
-    fun getArticles() : LiveData<List<DatabaseArticle>>
+    @Query("SELECT * FROM DatabaseArticle WHERE category =:category")
+    fun getArticles(category: String) : LiveData<List<DatabaseArticle>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(vararg articles: DatabaseArticle)
 
     @Query("DELETE FROM DatabaseArticle WHERE category = :category")
