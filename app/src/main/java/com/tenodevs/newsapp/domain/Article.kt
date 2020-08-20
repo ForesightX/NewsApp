@@ -39,7 +39,7 @@ fun List<Article>.toDatabaseModel(category: String) : List<DatabaseArticle> {
     }
 }
 
-fun List<DatabaseArticle>.toDomainModel(category: String) : List<Article> {
+fun List<DatabaseArticle>.toDomainModel() : List<Article> {
     return this.map {
         Article(
             author = it.author,
