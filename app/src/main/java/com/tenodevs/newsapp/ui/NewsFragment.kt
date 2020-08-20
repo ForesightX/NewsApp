@@ -79,7 +79,6 @@ class NewsFragment : Fragment() {
 
             swipeRefresh.setOnRefreshListener {
                 this@NewsFragment.viewModel.apply {
-                    refreshDataAction()
                     getFilteredHeadlines()
                 }
                 swipeRefresh.isRefreshing = false

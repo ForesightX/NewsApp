@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.tenodevs.newsapp.database.getDatabase
 import com.tenodevs.newsapp.network.NewsFilter
 import com.tenodevs.newsapp.repository.NewsRepository
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +18,9 @@ class NewsViewModel(application: Application, private val category: NewsFilter) 
     AndroidViewModel(application) {
 
     private val viewModelJob = SupervisorJob()
-    private val mRepository: NewsRepository = NewsRepository(application, category.value)
+    private val mRepository: NewsRepository = NewsRepository(
+        application, getDatabase(application), category.value
+    )
     val status = mRepository.status
     val newsList = mRepository.newsList
 
@@ -35,10 +38,6 @@ class NewsViewModel(application: Application, private val category: NewsFilter) 
         viewModelScope.launch {
             mRepository.getFilteredHeadlines()
         }
-    }
-
-    fun refreshDataAction() {
-        mRepository.refreshDataAction()
     }
 
     class HeadlineViewModelFactory(private val application: Application, val position: Int) :
