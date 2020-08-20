@@ -3,25 +3,29 @@ package com.tenodevs.newsapp.repository
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import com.tenodevs.newsapp.database.NewsDatabase
 import com.tenodevs.newsapp.domain.Article
 import com.tenodevs.newsapp.domain.toDatabaseModel
+import com.tenodevs.newsapp.domain.toDomainModel
 import com.tenodevs.newsapp.network.NewsAPI
 import com.tenodevs.newsapp.viewmodels.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception
-import java.util.*
 
 
-class NewsRepository(private val app: Application, private val category: String) {
+class NewsRepository(
+    private val app: Application, private val database: NewsDatabase, private val category: String
+) {
 
     private val _status = MutableLiveData<Status>()
     val status: LiveData<Status>
         get() = _status
 
-    private val _newsList = MutableLiveData<List<Article>>()
-    val newsList: LiveData<List<Article>>
-        get() = _newsList
+    val newsList: LiveData<List<Article>> = Transformations.map(database.newsDao.getArticles(category)) {
+        it.toDomainModel()
+    }
 
     suspend fun getFilteredHeadlines() {
         withContext(Dispatchers.IO) {
@@ -35,7 +39,7 @@ class NewsRepository(private val app: Application, private val category: String)
                 val listDatabaseArticle = listResult.articles.toDatabaseModel(category)
 
                 _status.postValue(Status.DONE)
-                _newsList.postValue(listResult.articles)
+                database.newsDao.insertAll(*listDatabaseArticle)
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     _status.value = Status.ERROR
@@ -44,7 +48,4 @@ class NewsRepository(private val app: Application, private val category: String)
         }
     }
 
-    fun refreshDataAction() {
-        _newsList.value = ArrayList()
-    }
 }
