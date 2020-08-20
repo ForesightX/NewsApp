@@ -26,7 +26,7 @@ data class DatabaseArticle (
     val urlToImage: String ?
 )
 
-fun List<Article>.toDatabaseModel(category: String) : List<DatabaseArticle> {
+fun List<Article>.toDatabaseModel(category: String) : Array<DatabaseArticle> {
     return this.map {
         DatabaseArticle(
             category = category,
@@ -36,7 +36,7 @@ fun List<Article>.toDatabaseModel(category: String) : List<DatabaseArticle> {
             url = it.url,
             urlToImage = it.urlToImage
         )
-    }
+    }.toTypedArray()
 }
 
 fun List<DatabaseArticle>.toDomainModel() : List<Article> {
