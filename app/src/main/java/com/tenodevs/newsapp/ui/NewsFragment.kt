@@ -36,17 +36,7 @@ class NewsFragment : Fragment() {
         ).get(NewsViewModel::class.java)
     }
 
-    private val snackBar: Snackbar by lazy {
-        Snackbar.make(
-            binding.recyclerView,
-            getString(R.string.snackbar_error),
-            Snackbar.LENGTH_INDEFINITE
-        )
-            .setAction(R.string.sncakbar_action) {
-                viewModel.getFilteredHeadlines()
-            }
-            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorActionText))
-    }
+    private lateinit var snackBar: Snackbar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -97,6 +87,15 @@ class NewsFragment : Fragment() {
         }
 
         viewModel.status.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(
+                binding.recyclerView,
+                getString(R.string.snackbar_error),
+                Snackbar.LENGTH_INDEFINITE
+            )
+                .setAction(R.string.sncakbar_action) {
+                    viewModel.getFilteredHeadlines()
+                }
+                .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorActionText))
             when (it) {
                 Status.ERROR -> snackBar.show()
                 else -> snackBar.dismiss()
