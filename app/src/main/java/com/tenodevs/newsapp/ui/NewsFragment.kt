@@ -87,7 +87,7 @@ class NewsFragment : Fragment() {
         }
 
         viewModel.status.observe(viewLifecycleOwner, Observer {
-            Snackbar.make(
+            snackBar = Snackbar.make(
                 binding.recyclerView,
                 getString(R.string.snackbar_error),
                 Snackbar.LENGTH_INDEFINITE
