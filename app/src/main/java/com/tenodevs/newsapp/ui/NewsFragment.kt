@@ -131,19 +131,6 @@ class NewsFragment : Fragment() {
                     }
                 }
             }
-
-            /*when(status) {
-                Status.LOADING -> {
-
-                }
-                Status.ERROR -> {
-                    statusImageView.visibility = View.VISIBLE
-                    statusImageView.setImageResource(R.drawable.ic_connection_error)
-                }
-                Status.DONE -> {
-
-                }
-            }*/
         })
 
         this.context?.let {
@@ -154,4 +141,4 @@ class NewsFragment : Fragment() {
 
     }
 
-}
+    }
