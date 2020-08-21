@@ -37,9 +37,9 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <ImageView
+            android:id="@+id/statusImageView"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            app:status="@{viewModel.status}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
