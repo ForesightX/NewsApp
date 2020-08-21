@@ -8,11 +8,16 @@
         <variable
             name="article"
             type="com.tenodevs.newsapp.domain.Article" />
+
+        <variable
+            name="clickListener"
+            type="com.tenodevs.newsapp.adapters.NewsListener" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/big_margin">
+    android:layout_margin="@dimen/big_margin"
+    android:onClick="@{() -> clickListener.onClick(article)}">
 
     <ImageView
         android:id="@+id/imageView"

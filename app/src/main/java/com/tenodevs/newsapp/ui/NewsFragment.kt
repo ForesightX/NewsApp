@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.snackbar.Snackbar
 import com.tenodevs.newsapp.R
 import com.tenodevs.newsapp.adapters.NewsAdapter
+import com.tenodevs.newsapp.adapters.NewsListener
 import com.tenodevs.newsapp.adapters.TAB_POSITION
 import com.tenodevs.newsapp.databinding.FragmentNewsBinding
 import com.tenodevs.newsapp.viewmodels.NewsViewModel
@@ -82,7 +84,9 @@ class NewsFragment : Fragment() {
 
             // This adds a line divider
             val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-            recyclerView.adapter = NewsAdapter()
+            recyclerView.adapter = NewsAdapter(NewsListener { url ->
+                Toast.makeText(context, url, Toast.LENGTH_SHORT).show()
+            })
             recyclerView.addItemDecoration(decoration)
 
             swipeRefresh.setColorSchemeColors(Color.WHITE)

@@ -8,7 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tenodevs.newsapp.databinding.ItemNewsBinding
 import com.tenodevs.newsapp.domain.Article
 
-class NewsAdapter: ListAdapter<Article, NewsAdapter.NewsViewHolder>(DiffCallback) {
+class NewsListener(val clickListener: (url: String) -> Unit) {
+    fun onClick(article: Article) = clickListener(article.url)
+}
+
+
+class NewsAdapter(private val clickListener: NewsListener)
+    : ListAdapter<Article, NewsAdapter.NewsViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         return NewsViewHolder.from(parent)
@@ -16,7 +22,7 @@ class NewsAdapter: ListAdapter<Article, NewsAdapter.NewsViewHolder>(DiffCallback
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val article = getItem(position)
-        holder.bind(article)
+        holder.bind(article, clickListener)
     }
 
     companion object DiffCallback: DiffUtil.ItemCallback<Article>() {
@@ -32,8 +38,9 @@ class NewsAdapter: ListAdapter<Article, NewsAdapter.NewsViewHolder>(DiffCallback
     class NewsViewHolder private constructor(private var binding: ItemNewsBinding)
         : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(article: Article) {
+        fun bind(article: Article, clickListener: NewsListener) {
             binding.article = article
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
 
