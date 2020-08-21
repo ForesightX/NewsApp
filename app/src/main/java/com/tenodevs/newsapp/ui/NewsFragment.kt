@@ -36,7 +36,17 @@ class NewsFragment : Fragment() {
         ).get(NewsViewModel::class.java)
     }
 
-    private lateinit var snackBar: Snackbar
+    private val snackBar: Snackbar by lazy {
+        Snackbar.make(
+            binding.recyclerView,
+            getString(R.string.snackbar_error),
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction(R.string.sncakbar_action) {
+                viewModel.getFilteredHeadlines()
+            }
+            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorActionText))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,19 +96,50 @@ class NewsFragment : Fragment() {
         }
 
         viewModel.status.observe(viewLifecycleOwner, Observer {
-            snackBar = Snackbar.make(
-                binding.recyclerView,
-                getString(R.string.snackbar_error),
-                Snackbar.LENGTH_INDEFINITE
-            )
-                .setAction(R.string.sncakbar_action) {
-                    viewModel.getFilteredHeadlines()
-                }
-                .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorActionText))
             when (it) {
-                Status.ERROR -> snackBar.show()
-                else -> snackBar.dismiss()
+                Status.LOADING -> {
+                    snackBar.dismiss()
+                    binding.apply {
+                        recyclerView.visibility = View.GONE
+                        statusImageView.visibility = View.VISIBLE
+                        statusImageView.setImageResource(R.drawable.loading_animation)
+                    }
+                }
+                Status.DONE -> {
+                    snackBar.dismiss()
+                    binding.apply {
+                        recyclerView.visibility = View.VISIBLE
+                        statusImageView.visibility = View.GONE
+                    }
+                }
+                else -> {
+                    snackBar.show()
+                    if (binding.recyclerView.adapter?.itemCount == 0) {
+                        binding.apply {
+                            statusImageView.visibility = View.VISIBLE
+                            statusImageView.setImageResource(R.drawable.ic_connection_error)
+                        }
+                    } else {
+                        binding.apply {
+                            recyclerView.visibility = View.VISIBLE
+                            statusImageView.visibility = View.GONE
+                        }
+                    }
+                }
             }
+
+            /*when(status) {
+                Status.LOADING -> {
+
+                }
+                Status.ERROR -> {
+                    statusImageView.visibility = View.VISIBLE
+                    statusImageView.setImageResource(R.drawable.ic_connection_error)
+                }
+                Status.DONE -> {
+
+                }
+            }*/
         })
 
         this.context?.let {
