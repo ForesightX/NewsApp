@@ -1,5 +1,6 @@
 package com.tenodevs.newsapp.ui
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -40,7 +41,7 @@ class NewsFragment : Fragment() {
 
     private val snackBar: Snackbar by lazy {
         Snackbar.make(
-            binding.recyclerView,
+            requireActivity().findViewById(R.id.linearLayout),
             getString(R.string.snackbar_error),
             Snackbar.LENGTH_INDEFINITE
         )
@@ -85,7 +86,11 @@ class NewsFragment : Fragment() {
             // This adds a line divider
             val decoration = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
             recyclerView.adapter = NewsAdapter(NewsListener { url ->
-                Toast.makeText(context, url, Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), ContentActivity::class.java).apply {
+                    putExtra("URL", url)
+                }
+
+                startActivity(intent)
             })
             recyclerView.addItemDecoration(decoration)
 
@@ -102,7 +107,7 @@ class NewsFragment : Fragment() {
         viewModel.status.observe(viewLifecycleOwner, Observer {
             when (it) {
                 Status.LOADING -> {
-                    snackBar.dismiss()
+                     snackBar.dismiss()
                     binding.apply {
                         recyclerView.visibility = View.GONE
                         statusImageView.visibility = View.VISIBLE
@@ -110,7 +115,7 @@ class NewsFragment : Fragment() {
                     }
                 }
                 Status.DONE -> {
-                    snackBar.dismiss()
+                     snackBar.dismiss()
                     binding.apply {
                         recyclerView.visibility = View.VISIBLE
                         statusImageView.visibility = View.GONE
